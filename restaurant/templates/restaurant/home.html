@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THE ANGELS RESTAURANT</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: url("{% static 'images/BG.png' %}") no-repeat center center / cover;
+            color: white;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 64px;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            color: #facc15;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: #e5e5e5;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 36px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            background: #d4af37;
+            color: black;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #facc15;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HOME -->
+<div class="hero">
+    <h1>THE ANGELS </h1>
+    <p>Fine Dining • Pure Taste • Heavenly Experience</p>
+
+    <div class="btn-group">
+        <a href="/menu/" class="btn">View Menu</a>
+        <a href="/contact/" class="btn">Contact Us</a>
+    </div>
+</div>
+
+</body>
+</html>

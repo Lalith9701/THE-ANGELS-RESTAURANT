@@ -19,6 +19,24 @@ A modern restaurant web application built using **Django**, featuring an elegant
 
 ## 🚀 How to Run
 ```bash
+
+restaurant/
+├── templates/
+│   └── restaurant/
+│       ├── home.html
+│       ├── menu.html
+│       └── contact.html
+├── static/
+│   └── images/
+│       └── BG.png
+├── models.py
+├── views.py
+├── urls.py
+├── admin.py
+manage.py
+requirements.txt
+README.md
+
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt

@@ -58,7 +58,7 @@
 
         .section { display: none; }
 
-        /* MENU CARDS */
+        /* MENU */
         .menu-row {
             display: flex;
             flex-wrap: wrap;
@@ -86,7 +86,7 @@
             border-radius: 12px;
         }
 
-        /* CART ICON */
+        /* CART */
         .cart-icon {
             position: fixed;
             top: 20px;
@@ -100,7 +100,6 @@
             z-index: 1000;
         }
 
-        /* CART PANEL */
         .cart-panel {
             position: fixed;
             top: 0;
@@ -137,53 +136,45 @@
             color: #facc15;
         }
 
-        a { color: #facc15; text-decoration: none; }
+        /* FOOTER */
+        footer {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #020617, #000);
+            padding: 40px 20px 20px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
 
-        /* ===== PROFESSIONAL FOOTER ===== */
-footer {
-    margin-top: 80px;
-    background: linear-gradient(135deg, #020617, #000000);
-    padding: 40px 20px 20px;
-    color: rgba(255,255,255,0.7);
-    border-top: 1px solid rgba(255,255,255,0.12);
-}
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
 
-.footer-container {
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-}
+        .footer-section h3 {
+            color: #facc15;
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
 
-.footer-section h3 {
-    color: #facc15;
-    font-size: 16px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-}
+        .footer-section p,
+        .footer-section a {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            line-height: 1.8;
+        }
 
-.footer-section p,
-.footer-section a {
-    font-size: 14px;
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    line-height: 1.8;
-}
-
-.footer-section a:hover {
-    color: #facc15;
-}
-
-.footer-bottom {
-    margin-top: 30px;
-    padding-top: 15px;
-    text-align: center;
-    font-size: 13px;
-    color: rgba(255,255,255,0.5);
-    border-top: 1px solid rgba(255,255,255,0.12);
-}
-
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
     </style>
 
     <script>
@@ -236,26 +227,17 @@ footer {
 
 <body>
 
-<!-- CART ICON -->
-<div class="cart-icon" onclick="toggleCart()">
-    🛒 Cart (<span id="cart-count">0</span>)
-</div>
+<div class="cart-icon" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
 
-<!-- CART PANEL -->
 <div class="cart-panel" id="cart">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
         <h2>Your Cart</h2>
-        <button onclick="toggleCart()"
-            style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;">
-            ✖
-        </button>
+        <button onclick="toggleCart()" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;">✖</button>
     </div>
-
     <div id="cart-items"></div>
     <div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
 </div>
 
-<!-- BRAND -->
 <div class="brand-header">
     <h1 class="brand-title">THE ANGELS RESTAURANT</h1>
     <p class="brand-tagline">Fine Dining • Pure Taste • Heavenly Experience</p>
@@ -269,85 +251,135 @@ footer {
 <!-- VEG MENU -->
 <div id="veg" class="section">
     <h2>🥗 Veg Menu</h2>
+
+    <h3>STARTERS</h3>
     <div class="menu-row">
-        {% for item in veg_items %}
+        {% for item in veg_items %}{% if item.category == "Starter" %}
         <div class="menu-card">
             {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
             <h4>{{ item.name }}</h4>
             <p>₹{{ item.price }}</p>
-            <button class="btn veg-btn"
-                onclick="addToCart('{{ item.name }}', '{{ item.price }}')">
-                Add to Cart
-            </button>
+            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
         </div>
-        {% endfor %}
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>MAIN COURSE</h3>
+    <div class="menu-row">
+        {% for item in veg_items %}{% if item.category == "Main Course" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>DESSERTS</h3>
+    <div class="menu-row">
+        {% for item in veg_items %}{% if item.category == "Dessert" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>DRINKS</h3>
+    <div class="menu-row">
+        {% for item in veg_items %}{% if item.category == "Drinks" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
     </div>
 </div>
 
 <!-- NON-VEG MENU -->
 <div id="nonveg" class="section">
     <h2>🍗 Non-Veg Menu</h2>
+
+    <h3>STARTERS</h3>
     <div class="menu-row">
-        {% for item in nonveg_items %}
+        {% for item in nonveg_items %}{% if item.category == "Starter" %}
         <div class="menu-card">
             {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
             <h4>{{ item.name }}</h4>
             <p>₹{{ item.price }}</p>
-            <button class="btn nonveg-btn"
-                onclick="addToCart('{{ item.name }}', '{{ item.price }}')">
-                Add to Cart
-            </button>
+            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
         </div>
-        {% endfor %}
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>MAIN COURSE</h3>
+    <div class="menu-row">
+        {% for item in nonveg_items %}{% if item.category == "Main Course" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>DESSERTS</h3>
+    <div class="menu-row">
+        {% for item in nonveg_items %}{% if item.category == "Dessert" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
+    </div>
+
+    <h3>DRINKS</h3>
+    <div class="menu-row">
+        {% for item in nonveg_items %}{% if item.category == "Drinks" %}
+        <div class="menu-card">
+            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
+            <h4>{{ item.name }}</h4>
+            <p>₹{{ item.price }}</p>
+            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+        </div>
+        {% endif %}{% endfor %}
     </div>
 </div>
 
-<br>
-<a href="/">⬅ Back to Home</a>
 <footer>
-
     <div class="footer-container">
-
-        <!-- BRAND -->
         <div class="footer-section">
             <h3>THE ANGELS RESTAURANT</h3>
-            <p>
-                Fine Dining experience crafted with passion, 
-                premium ingredients, and heavenly flavors.
-            </p>
+            <p>Fine dining with premium taste and heavenly experience.</p>
         </div>
-
-        <!-- CONTACT -->
         <div class="footer-section">
             <h3>CONTACT</h3>
             <p>📍 Main Road, Vadodara</p>
             <p>📞 +91 97019 90126</p>
             <p>⏰ 10:00 AM – 11:00 PM</p>
         </div>
-
-        <!-- QUICK LINKS -->
         <div class="footer-section">
             <h3>QUICK LINKS</h3>
             <a href="/">Home</a><br>
             <a href="/menu/">Menu</a><br>
             <a href="/contact/">Contact</a>
         </div>
-
-        <!-- NOTE -->
         <div class="footer-section">
             <h3>NOTE</h3>
-            <p>
-                Prices may vary based on availability.
-                Taxes applicable as per government rules.
-            </p>
+            <p>Prices may vary. Taxes applicable as per rules.</p>
         </div>
-
     </div>
-
     <div class="footer-bottom">
         © 2025 THE ANGELS RESTAURANT. All Rights Reserved.
     </div>
-
 </footer>
 
 </body>

@@ -1,3 +1,4 @@
+#app page
 from django.apps import AppConfig
 
 class RestaurantConfig(AppConfig):

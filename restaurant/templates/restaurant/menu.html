@@ -1,147 +1,329 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE ANGELS RESTAURANT | Menu</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-gold: #d4af37;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(15, 15, 15, 0.85);
+            --text-light: #f9fafb;
+            --veg-color: #22c55e;
+            --nonveg-color: #ef4444;
+        }
+
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-            color: #f9fafb;
+            padding: 0;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            background-image: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
         }
 
-        h1, h2, h3, h4, p {
-            color: #f9fafb;
-        }
+        h1, h2, h3, h4, p { margin: 0; }
 
-        /* BRAND */
+        /* BRAND HEADER */
         .brand-header {
+            position: relative; /* Added for the back button positioning */
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            padding: 60px 20px 40px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+
+        /* NEW BACK BUTTON */
+        .back-btn {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            color: var(--primary-gold);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-gold);
+            color: #000;
+            border-color: var(--primary-gold);
+            transform: translateX(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
         }
 
         .brand-title {
-            font-size: 42px;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
             letter-spacing: 6px;
-            color: #facc15;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .brand-tagline {
-            font-size: 16px;
-            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            font-weight: 300;
         }
 
-        /* BUTTONS */
-        .btn {
-            padding: 14px 26px;
-            margin: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-
-        .veg-btn { background: #22c55e; color: white; }
-        .nonveg-btn { background: #ef4444; color: white; }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-        }
-
-        .section { display: none; }
-
-        /* MENU */
-        .menu-row {
+        /* TOGGLE CONTROLS */
+        .controls {
+            text-align: center;
+            margin: 0 auto 50px;
             display: flex;
-            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .toggle-btn {
+            padding: 12px 35px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toggle-btn.active-veg {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: var(--veg-color);
+            color: var(--veg-color);
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+        }
+
+        .toggle-btn.active-nonveg {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--nonveg-color);
+            color: var(--nonveg-color);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        /* MENU SECTION LAYOUT */
+        .section { display: none; padding: 0 2%; max-width: 1600px; margin: 0 auto; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-light);
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin: 50px 0 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* MENU GRID & CARDS (5 ITEMS PER ROW) */
+        .menu-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
         }
 
         .menu-card {
-            width: 220px;
-            background: rgba(2,6,23,0.9);
-            padding: 14px;
+            background: var(--glass-bg);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-            transition: 0.3s;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .menu-card:hover {
-            transform: translateY(-8px) scale(1.04);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+            border-color: rgba(212, 175, 55, 0.3);
         }
 
         .menu-card img {
-            width: 200px;
-            height: 140px;
+            width: 100%;
+            height: 180px;
             object-fit: cover;
-            border-radius: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* CART */
+        .card-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .card-content p {
+            color: var(--primary-gold);
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .add-btn {
+            margin-top: auto;
+            padding: 10px;
+            border: 1px solid;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .add-btn-veg { color: var(--veg-color); border-color: var(--veg-color); }
+        .add-btn-veg:hover { background: var(--veg-color); color: #fff; }
+
+        .add-btn-nonveg { color: var(--nonveg-color); border-color: var(--nonveg-color); }
+        .add-btn-nonveg:hover { background: var(--nonveg-color); color: #fff; }
+
+        /* CART FLOATING BUTTON & PANEL */
         .cart-icon {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #facc15;
-            color: black;
-            padding: 12px 18px;
-            border-radius: 30px;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-gold);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             z-index: 1000;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
+        .cart-icon:hover { transform: scale(1.05); }
 
         .cart-panel {
             position: fixed;
             top: 0;
-            right: -360px;
-            width: 340px;
+            right: -400px;
+            width: 350px;
             height: 100vh;
-            background: #020617;
-            padding: 20px;
-            transition: 0.4s;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2000;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.7);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            border-left: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
 
         .cart-panel.open { right: 0; }
 
-        .cart-item {
-            margin-bottom: 10px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 6px;
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
         }
 
-        .cart-item button {
-            background: red;
+        .cart-header h2 { font-family: 'Playfair Display', serif; color: var(--primary-gold); }
+        
+        .close-cart {
+            background: transparent;
+            color: #fff;
             border: none;
-            color: white;
-            padding: 4px 8px;
+            font-size: 24px;
             cursor: pointer;
-            border-radius: 4px;
+        }
+
+        #cart-items { flex-grow: 1; overflow-y: auto; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+
+        .cart-item-info { font-size: 0.95rem; }
+        .cart-item-price { color: var(--primary-gold); font-weight: 600; }
+
+        .remove-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--nonveg-color);
+            color: var(--nonveg-color);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+        .remove-btn:hover { background: var(--nonveg-color); color: #fff; }
+
+        .cart-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .cart-total {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #facc15;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
         }
 
         /* FOOTER */
         footer {
-            margin-top: 80px;
-            background: linear-gradient(135deg, #020617, #000);
-            padding: 40px 20px 20px;
-            border-top: 1px solid rgba(255,255,255,0.12);
+            margin-top: 100px;
+            background: #050505;
+            padding: 60px 20px 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .footer-container {
@@ -149,31 +331,58 @@
             margin: auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
+            gap: 40px;
         }
 
         .footer-section h3 {
-            color: #facc15;
-            font-size: 16px;
+            color: var(--primary-gold);
+            font-size: 14px;
             letter-spacing: 2px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
-        .footer-section p,
-        .footer-section a {
+        .footer-section p, .footer-section a {
             font-size: 14px;
-            color: rgba(255,255,255,0.7);
+            color: #999;
             text-decoration: none;
-            line-height: 1.8;
+            line-height: 2;
+            transition: color 0.3s;
         }
+
+        .footer-section a:hover { color: var(--primary-gold); }
 
         .footer-bottom {
-            margin-top: 30px;
-            padding-top: 15px;
+            margin-top: 50px;
+            padding-top: 20px;
             text-align: center;
             font-size: 13px;
-            color: rgba(255,255,255,0.5);
-            border-top: 1px solid rgba(255,255,255,0.12);
+            color: #666;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* RESPONSIVE MEDIA QUERIES */
+        @media (max-width: 1400px) {
+            .menu-row { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 1100px) {
+            .menu-row { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 800px) {
+            .menu-row { grid-template-columns: repeat(2, 1fr); }
+            
+            /* Center back button on smaller screens so it doesn't clash with title */
+            .back-btn {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 500px) {
+            .menu-row { grid-template-columns: 1fr; }
+            .brand-title { font-size: 2.2rem; }
+            .cart-panel { width: 100%; right: -100%; }
         }
     </style>
 
@@ -184,11 +393,15 @@
         function showVeg() {
             document.getElementById("veg").style.display = "block";
             document.getElementById("nonveg").style.display = "none";
+            document.getElementById("btn-veg").classList.add("active-veg");
+            document.getElementById("btn-nonveg").classList.remove("active-nonveg");
         }
 
         function showNonVeg() {
             document.getElementById("veg").style.display = "none";
             document.getElementById("nonveg").style.display = "block";
+            document.getElementById("btn-veg").classList.remove("active-veg");
+            document.getElementById("btn-nonveg").classList.add("active-nonveg");
         }
 
         function toggleCart() {
@@ -199,6 +412,10 @@
             cart.push({name, price});
             total += price;
             updateCart();
+            
+            let cartIcon = document.querySelector('.cart-icon');
+            cartIcon.style.transform = 'scale(1.1)';
+            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
         }
 
         function removeItem(index) {
@@ -213,8 +430,11 @@
             cart.forEach((item, i) => {
                 items.innerHTML += `
                     <div class="cart-item">
-                        ${item.name} - ₹${item.price}
-                        <button onclick="removeItem(${i})">X</button>
+                        <div class="cart-item-info">${item.name}</div>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div class="cart-item-price">₹${item.price}</div>
+                            <button class="remove-btn" onclick="removeItem(${i})">✖</button>
+                        </div>
                     </div>`;
             });
             document.getElementById("cart-total").innerText = total;
@@ -227,128 +447,151 @@
 
 <body>
 
-<div class="cart-icon" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
+<div class="cart-icon" onclick="toggleCart()">
+    🛒 View Cart (<span id="cart-count">0</span>)
+</div>
 
 <div class="cart-panel" id="cart">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-        <h2>Your Cart</h2>
-        <button onclick="toggleCart()" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;">✖</button>
+    <div class="cart-header">
+        <h2>Your Order</h2>
+        <button class="close-cart" onclick="toggleCart()">×</button>
     </div>
     <div id="cart-items"></div>
-    <div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total:</span>
+            <span>₹<span id="cart-total">0</span></span>
+        </div>
+    </div>
 </div>
 
 <div class="brand-header">
-    <h1 class="brand-title">THE ANGELS RESTAURANT</h1>
-    <p class="brand-tagline">Fine Dining • Pure Taste • Heavenly Experience</p>
+    <a href="/" class="back-btn">⬅ Home</a>
+    
+    <h1 class="brand-title">THE ANGELS</h1>
+    <p class="brand-tagline">Menu Collection</p>
 </div>
 
-<button class="btn veg-btn" onclick="showVeg()">🥗 Veg</button>
-<button class="btn nonveg-btn" onclick="showNonVeg()">🍗 Non-Veg</button>
+<div class="controls">
+    <button id="btn-veg" class="toggle-btn" onclick="showVeg()">🥗 Pure Veg</button>
+    <button id="btn-nonveg" class="toggle-btn" onclick="showNonVeg()">🍗 Non-Veg</button>
+</div>
 
-<hr>
-
-<!-- VEG MENU -->
 <div id="veg" class="section">
-    <h2>🥗 Veg Menu</h2>
+    <h2 class="section-title">Vegetarian Delights</h2>
 
-    <h3>STARTERS</h3>
+    <h3 class="category-title">Starters</h3>
     <div class="menu-row">
         {% for item in veg_items %}{% if item.category == "Starter" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>MAIN COURSE</h3>
+    <h3 class="category-title">Main Course</h3>
     <div class="menu-row">
         {% for item in veg_items %}{% if item.category == "Main Course" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>DESSERTS</h3>
+    <h3 class="category-title">Desserts</h3>
     <div class="menu-row">
         {% for item in veg_items %}{% if item.category == "Dessert" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>DRINKS</h3>
+    <h3 class="category-title">Drinks</h3>
     <div class="menu-row">
         {% for item in veg_items %}{% if item.category == "Drinks" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn veg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 </div>
 
-<!-- NON-VEG MENU -->
 <div id="nonveg" class="section">
-    <h2>🍗 Non-Veg Menu</h2>
+    <h2 class="section-title">Signature Non-Veg</h2>
 
-    <h3>STARTERS</h3>
+    <h3 class="category-title">Starters</h3>
     <div class="menu-row">
         {% for item in nonveg_items %}{% if item.category == "Starter" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>MAIN COURSE</h3>
+    <h3 class="category-title">Main Course</h3>
     <div class="menu-row">
         {% for item in nonveg_items %}{% if item.category == "Main Course" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>DESSERTS</h3>
+    <h3 class="category-title">Desserts</h3>
     <div class="menu-row">
         {% for item in nonveg_items %}{% if item.category == "Dessert" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
 
-    <h3>DRINKS</h3>
+    <h3 class="category-title">Drinks</h3>
     <div class="menu-row">
         {% for item in nonveg_items %}{% if item.category == "Drinks" %}
         <div class="menu-card">
-            {% if item.image %}<img src="{{ item.image.url }}">{% endif %}
-            <h4>{{ item.name }}</h4>
-            <p>₹{{ item.price }}</p>
-            <button class="btn nonveg-btn" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Cart</button>
+            {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% endif %}
+            <div class="card-content">
+                <h4>{{ item.name }}</h4>
+                <p>₹{{ item.price }}</p>
+                <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+            </div>
         </div>
         {% endif %}{% endfor %}
     </div>
@@ -378,7 +621,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        © 2025 THE ANGELS RESTAURANT. All Rights Reserved.
+        © 2026 THE ANGELS RESTAURANT. All Rights Reserved.
     </div>
 </footer>
 

@@ -3,76 +3,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>THE ANGELS RESTAURANT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ANGELS RESTAURANT | Fine Dining</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        :root {
+            --primary-gold: #d4af37;
+            --text-light: #f9f9f9;
+        }
+
+        body, html {
             margin: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: url("{% static 'images/BG.png' %}") no-repeat center center / cover;
-            color: white;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            color: var(--text-light);
         }
 
         /* HERO SECTION */
         .hero {
+            position: relative;
             min-height: 100vh;
-            background: rgba(0, 0, 0, 0.55);
+            /* Combined your static background image with a gradient overlay for better text readability */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                        url("{% static 'images/BG.png' %}") no-repeat center center / cover;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            flex-direction: column;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 20px;
+            /* Subtle entrance animation for a premium feel */
+            animation: fadeInUp 1.2s ease-out forwards;
         }
 
         h1 {
-            font-size: 64px;
-            letter-spacing: 6px;
-            margin-bottom: 15px;
-            color: #facc15;
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            letter-spacing: 10px;
+            margin: 0 0 15px 0;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            color: #e5e5e5;
+        .tagline {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            color: #ddd;
+            font-weight: 300;
+            text-transform: uppercase;
         }
 
         .btn-group {
             display: flex;
             gap: 20px;
-            flex-wrap: wrap;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
+        /* Base Button Styles */
         .btn {
-            padding: 14px 36px;
-            font-size: 18px;
-            border: none;
-            border-radius: 30px;
-            background: #d4af37;
-            color: black;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 16px 45px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s ease;
         }
 
-        .btn:hover {
-            background: #facc15;
-            transform: scale(1.05);
+        /* Primary Button (Solid) */
+        .btn-primary {
+            background: var(--primary-gold);
+            color: #000;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Secondary Button (Outlined) */
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-gold);
+            border: 2px solid var(--primary-gold);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-gold);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+                letter-spacing: 6px;
+            }
+            .tagline {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+            .btn {
+                padding: 14px 35px;
+                width: 100%; /* Makes buttons full-width on mobile */
+                max-width: 250px;
+            }
         }
     </style>
 </head>
-
 <body>
 
-<!-- HOME -->
 <div class="hero">
-    <h1>THE ANGELS </h1>
-    <p>Fine Dining • Pure Taste • Heavenly Experience</p>
+    <div class="hero-content">
+        <h1>THE ANGELS</h1>
+        <p class="tagline">Fine Dining • Pure Taste • Heavenly Experience</p>
 
-    <div class="btn-group">
-        <a href="/menu/" class="btn">View Menu</a>
-        <a href="/contact/" class="btn">Contact Us</a>
+        <div class="btn-group">
+            <a href="/menu/" class="btn btn-primary">View Menu</a>
+            <a href="/contact/" class="btn btn-secondary">Contact Us</a>
+        </div>
     </div>
 </div>
 

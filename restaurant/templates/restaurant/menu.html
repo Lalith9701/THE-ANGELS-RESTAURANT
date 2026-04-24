@@ -661,21 +661,27 @@
     </button>
 </div>
 
+{% comment %}Macro-like include for a single menu card{% endcomment %}
+
 <!-- VEG MENU -->
 <div id="menu-veg" class="menu-content">
     <div class="menu-section">
 
+        {% for cat_name, cat_label in veg_categories %}
+        {% with has_items=False %}
         <div class="category-block">
             <div class="category-header">
-                <span class="category-label">Starters</span>
+                <span class="category-label">{{ cat_label }}</span>
                 <div class="category-line"></div>
             </div>
             <div class="menu-grid">
-                {% for item in veg_items %}{% if item.category == "Starter" %}
+                {% for item in veg_items %}{% if item.category == cat_name %}
                 <div class="menu-card">
                     <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
+                        {% with img=item.get_image %}
+                        {% if img %}<img src="{{ img }}" alt="{{ item.name }}" loading="lazy">
                         {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
+                        {% endwith %}
                         <div class="card-type-badge badge-veg"><div class="badge-dot"></div></div>
                     </div>
                     <div class="card-body">
@@ -690,84 +696,8 @@
                 {% endif %}{% endfor %}
             </div>
         </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Main Course</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in veg_items %}{% if item.category == "Main Course" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-veg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Desserts</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in veg_items %}{% if item.category == "Dessert" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-veg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Drinks</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in veg_items %}{% if item.category == "Drinks" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-veg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
+        {% endwith %}
+        {% endfor %}
 
     </div>
 </div>
@@ -776,17 +706,20 @@
 <div id="menu-nonveg" class="menu-content">
     <div class="menu-section">
 
+        {% for cat_name, cat_label in nonveg_categories %}
         <div class="category-block">
             <div class="category-header">
-                <span class="category-label">Starters</span>
+                <span class="category-label">{{ cat_label }}</span>
                 <div class="category-line"></div>
             </div>
             <div class="menu-grid">
-                {% for item in nonveg_items %}{% if item.category == "Starter" %}
+                {% for item in nonveg_items %}{% if item.category == cat_name %}
                 <div class="menu-card">
                     <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
+                        {% with img=item.get_image %}
+                        {% if img %}<img src="{{ img }}" alt="{{ item.name }}" loading="lazy">
                         {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
+                        {% endwith %}
                         <div class="card-type-badge badge-nonveg"><div class="badge-dot"></div></div>
                     </div>
                     <div class="card-body">
@@ -801,84 +734,7 @@
                 {% endif %}{% endfor %}
             </div>
         </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Main Course</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in nonveg_items %}{% if item.category == "Main Course" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-nonveg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Desserts</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in nonveg_items %}{% if item.category == "Dessert" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-nonveg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
-
-        <div class="category-block">
-            <div class="category-header">
-                <span class="category-label">Drinks</span>
-                <div class="category-line"></div>
-            </div>
-            <div class="menu-grid">
-                {% for item in nonveg_items %}{% if item.category == "Drinks" %}
-                <div class="menu-card">
-                    <div class="card-img-wrap">
-                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy">
-                        {% else %}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;">🍽️</div>{% endif %}
-                        <div class="card-type-badge badge-nonveg"><div class="badge-dot"></div></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-name">{{ item.name }}</h3>
-                        {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
-                        <div class="card-footer">
-                            <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}{% endfor %}
-            </div>
-        </div>
+        {% endfor %}
 
     </div>
 </div>

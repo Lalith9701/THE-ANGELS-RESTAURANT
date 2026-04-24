@@ -553,10 +553,7 @@
             {% endfor %}
             {% endif %}
 
-            <form method="POST" action="https://api.web3forms.com/submit" id="reservation-form">
-                <input type="hidden" name="access_key" value="Ax2HFjRdpsyapcliBo7Z7ydr">
-                <input type="hidden" name="subject" value="New Table Reservation — The Angels Restaurant">
-                <input type="hidden" name="redirect" value="false">
+            <form method="POST" action="https://submit.formspark.io/f/Ax2HFjRdpsyapcliBo7Z7ydr" id="reservation-form">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">

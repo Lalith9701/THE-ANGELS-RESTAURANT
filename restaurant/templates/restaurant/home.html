@@ -4,154 +4,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ANGELS RESTAURANT | Fine Dining</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <title>The Angels Restaurant | Fine Dining</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         :root {
-            --primary-gold: #d4af37;
-            --text-light: #f9f9f9;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --gold-dim: rgba(201,168,76,0.15);
+            --dark: #080808;
+            --dark-2: #111111;
+            --dark-3: #1a1a1a;
+            --text: #f0ece4;
+            --text-muted: #9a9080;
+            --border: rgba(201,168,76,0.2);
+            --nav-h: 80px;
         }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background: #0a0a0a;
-            color: var(--text-light);
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        /* HERO SECTION */
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-h);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            transition: background 0.4s, box-shadow 0.4s;
+        }
+        nav.scrolled {
+            background: rgba(8,8,8,0.96);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 var(--border);
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-reserve {
+            padding: 10px 28px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .nav-reserve:hover { background: var(--gold); color: var(--dark); }
+
+        /* ── HERO ── */
         .hero {
             position: relative;
-            min-height: 100vh;
-            /* Combined your static background image with a gradient overlay for better text readability */
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
-                        url("{% static 'images/BG.png' %}") no-repeat center center / cover;
+            height: 100vh;
+            min-height: 700px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
+            overflow: hidden;
         }
-
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url("{% static 'images/BG.png' %}") center/cover no-repeat;
+            transform: scale(1.05);
+            transition: transform 8s ease;
+        }
+        .hero:hover .hero-bg { transform: scale(1); }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(8,8,8,0.3) 0%,
+                rgba(8,8,8,0.55) 50%,
+                rgba(8,8,8,0.9) 100%
+            );
+        }
         .hero-content {
-            max-width: 900px;
-            padding: 0 20px;
-            /* Subtle entrance animation for a premium feel */
-            animation: fadeInUp 1.2s ease-out forwards;
+            position: relative;
+            text-align: center;
+            padding: 0 24px;
+            animation: heroIn 1.4s cubic-bezier(0.16,1,0.3,1) both;
         }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 5.5rem;
-            letter-spacing: 10px;
-            margin: 0 0 15px 0;
-            color: var(--primary-gold);
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+            color: var(--gold);
+            margin-bottom: 24px;
+            opacity: 0.9;
         }
-
-        .tagline {
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            margin-bottom: 50px;
-            color: #ddd;
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 10vw, 8rem);
             font-weight: 300;
+            line-height: 0.95;
+            letter-spacing: 8px;
             text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 8px;
         }
-
-        .btn-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .hero-title span { color: var(--gold); font-style: italic; }
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 32px auto;
+            opacity: 0.6;
         }
-
-        /* Base Button Styles */
-        .btn {
-            padding: 16px 45px;
-            font-size: 0.95rem;
+        .hero-sub {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 50px;
+            color: var(--text-muted);
+            margin-bottom: 56px;
+        }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn-gold {
+            padding: 16px 48px;
+            background: var(--gold);
+            color: var(--dark);
             text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             font-weight: 600;
-            transition: all 0.4s ease;
+            border-radius: 2px;
+            transition: all 0.3s;
+            border: 1px solid var(--gold);
         }
-
-        /* Primary Button (Solid) */
-        .btn-primary {
-            background: var(--primary-gold);
-            color: #000;
-            border: 2px solid var(--primary-gold);
-        }
-
-        .btn-primary:hover {
+        .btn-gold:hover {
             background: transparent;
-            color: var(--primary-gold);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+            box-shadow: 0 0 30px rgba(201,168,76,0.2);
         }
-
-        /* Secondary Button (Outlined) */
-        .btn-secondary {
+        .btn-outline {
+            padding: 16px 48px;
             background: transparent;
-            color: var(--primary-gold);
-            border: 2px solid var(--primary-gold);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+            border-radius: 2px;
+            transition: all 0.3s;
+            border: 1px solid rgba(240,236,228,0.3);
+        }
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+        .hero-scroll::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
         }
 
-        .btn-secondary:hover {
-            background: var(--primary-gold);
-            color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        /* ── FEATURES STRIP ── */
+        .features {
+            background: var(--dark-2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+        .features-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .feature-item {
+            padding: 48px 32px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+        .feature-item:last-child { border-right: none; }
+        .feature-item:hover { background: var(--gold-dim); }
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .feature-label {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .feature-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
-        /* Animation Keyframes */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* ── ABOUT SECTION ── */
+        .about {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .about-label {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .about-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 28px;
+            color: var(--text);
+        }
+        .about-title em { color: var(--gold); font-style: italic; }
+        .about-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+        .about-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: 300;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .about-visual {
+            position: relative;
+        }
+        .about-img-wrap {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            background: var(--dark-3);
+        }
+        .about-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.75) saturate(0.85);
+            transition: transform 0.6s ease;
+        }
+        .about-img-wrap:hover img { transform: scale(1.04); }
+        .about-badge {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 120px;
+            height: 120px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .about-badge-num { font-size: 2rem; font-weight: 600; line-height: 1; }
+        .about-badge-text { font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* ── SPECIALTIES ── */
+        .specialties {
+            background: var(--dark-2);
+            padding: 120px 60px;
+            border-top: 1px solid var(--border);
+        }
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 80px;
+        }
+        .section-label {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .section-title em { color: var(--gold); font-style: italic; }
+        .specialties-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .specialty-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            cursor: pointer;
+        }
+        .specialty-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            filter: brightness(0.6);
+        }
+        .specialty-card:hover img { transform: scale(1.08); filter: brightness(0.5); }
+        .specialty-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 36px;
+            transition: all 0.4s;
+        }
+        .specialty-tag {
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .specialty-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        .specialty-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .specialty-card:hover .specialty-desc { max-height: 80px; }
+
+        /* ── CTA BANNER ── */
+        .cta-banner {
+            position: relative;
+            padding: 120px 60px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1600&q=80&auto=format&fit=crop") center/cover no-repeat;
+            filter: brightness(0.15) saturate(0.4);
+        }
+        .cta-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+        }
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        .cta-label {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .cta-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .cta-sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            letter-spacing: 1px;
         }
 
-        /* Responsive Adjustments */
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            padding: 80px 60px 40px;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+        }
+        .footer-brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .footer-brand-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 280px;
+        }
+        .footer-col-title {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+        .footer-col a, .footer-col p {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            line-height: 2.2;
+            transition: color 0.3s;
+        }
+        .footer-col a:hover { color: var(--gold); }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes heroIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .features-inner { grid-template-columns: repeat(2, 1fr); }
+            .feature-item:nth-child(2) { border-right: none; }
+            .feature-item:nth-child(3) { border-top: 1px solid var(--border); }
+            .about { grid-template-columns: 1fr; gap: 60px; padding: 80px 40px; }
+            .about-visual { order: -1; }
+            .about-badge { bottom: -10px; left: -10px; width: 100px; height: 100px; }
+            .specialties-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+        }
         @media (max-width: 768px) {
-            h1 {
-                font-size: 3.5rem;
-                letter-spacing: 6px;
-            }
-            .tagline {
-                font-size: 0.9rem;
-                letter-spacing: 2px;
-            }
-            .btn {
-                padding: 14px 35px;
-                width: 100%; /* Makes buttons full-width on mobile */
-                max-width: 250px;
-            }
+            nav { padding: 0 24px; }
+            .nav-links { display: none; }
+            .hero-title { letter-spacing: 4px; }
+            .features-inner { grid-template-columns: 1fr; }
+            .feature-item { border-right: none; border-bottom: 1px solid var(--border); }
+            .specialties-grid { grid-template-columns: 1fr; }
+            .specialties { padding: 80px 24px; }
+            .cta-banner { padding: 80px 24px; }
+            footer { padding: 60px 24px 32px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <div class="hero-content">
-        <h1>THE ANGELS</h1>
-        <p class="tagline">Fine Dining • Pure Taste • Heavenly Experience</p>
+<!-- NAV -->
+<nav id="navbar">
+    <a href="/" class="nav-logo">The Angels</a>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/menu/">Menu</a></li>
+        <li><a href="/contact/">Contact</a></li>
+    </ul>
+    <a href="/contact/" class="nav-reserve">Reserve a Table</a>
+</nav>
 
-        <div class="btn-group">
-            <a href="/menu/" class="btn btn-primary">View Menu</a>
-            <a href="/contact/" class="btn btn-secondary">Contact Us</a>
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">Est. 2020 &nbsp;·&nbsp; Vadodara, Gujarat</p>
+        <h1 class="hero-title">The <span>Angels</span></h1>
+        <div class="hero-divider"></div>
+        <p class="hero-sub">Fine Dining &nbsp;·&nbsp; Pure Taste &nbsp;·&nbsp; Heavenly Experience</p>
+        <div class="hero-actions">
+            <a href="/menu/" class="btn-gold">Explore Menu</a>
+            <a href="/contact/" class="btn-outline">Reserve a Table</a>
         </div>
     </div>
-</div>
+    <div class="hero-scroll">Scroll</div>
+</section>
 
+<!-- FEATURES STRIP -->
+<section class="features">
+    <div class="features-inner">
+        <div class="feature-item">
+            <span class="feature-icon">🍽️</span>
+            <div class="feature-label">Curated Menu</div>
+            <div class="feature-desc">Seasonal ingredients crafted into unforgettable dishes</div>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🌿</span>
+            <div class="feature-label">Fresh & Pure</div>
+            <div class="feature-desc">Farm-to-table philosophy with zero compromise on quality</div>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">🕯️</span>
+            <div class="feature-label">Ambient Dining</div>
+            <div class="feature-desc">An atmosphere designed for memorable moments</div>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">👨‍🍳</span>
+            <div class="feature-label">Master Chefs</div>
+            <div class="feature-desc">Decades of culinary expertise on every plate</div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+    <div class="about-text-col">
+        <p class="about-label">Our Story</p>
+        <h2 class="about-title">Where Every Meal Becomes a <em>Memory</em></h2>
+        <p class="about-text">
+            The Angels Restaurant was born from a simple belief — that great food has the power to bring people together and create moments that last a lifetime. Nestled in the heart of Vadodara, we blend traditional Indian flavours with contemporary culinary artistry.
+        </p>
+        <p class="about-text">
+            Every dish on our menu is a labour of love, prepared fresh daily using the finest locally sourced ingredients. Whether you're celebrating a milestone or simply enjoying a quiet evening, we promise an experience that transcends the ordinary.
+        </p>
+        <div class="about-stats">
+            <div>
+                <div class="stat-num">50+</div>
+                <div class="stat-label">Menu Items</div>
+            </div>
+            <div>
+                <div class="stat-num">5★</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+            <div>
+                <div class="stat-num">6+</div>
+                <div class="stat-label">Years Serving</div>
+            </div>
+        </div>
+    </div>
+    <div class="about-visual">
+        <div class="about-img-wrap">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&auto=format&fit=crop" alt="Fine dining table setting">
+        </div>
+        <div class="about-badge">
+            <span class="about-badge-num">★</span>
+            <span class="about-badge-text">Premium</span>
+        </div>
+    </div>
+</section>
+
+<!-- SPECIALTIES -->
+<section class="specialties">
+    <div class="section-header">
+        <p class="section-label">Chef's Selection</p>
+        <h2 class="section-title">Our Signature <em>Specialties</em></h2>
+    </div>
+    <div class="specialties-grid">
+        <div class="specialty-card">
+            <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=800&q=80&auto=format&fit=crop" alt="Artisan Starters">
+            <div class="specialty-overlay">
+                <span class="specialty-tag">Appetisers</span>
+                <h3 class="specialty-name">Artisan Starters</h3>
+                <p class="specialty-desc">Begin your journey with our handcrafted starters, bursting with bold flavours and elegant presentation.</p>
+            </div>
+        </div>
+        <div class="specialty-card">
+            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80&auto=format&fit=crop" alt="Signature Mains">
+            <div class="specialty-overlay">
+                <span class="specialty-tag">Mains</span>
+                <h3 class="specialty-name">Signature Mains</h3>
+                <p class="specialty-desc">Rich, hearty mains that celebrate the depth of Indian cuisine with a refined modern touch.</p>
+            </div>
+        </div>
+        <div class="specialty-card">
+            <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80&auto=format&fit=crop" alt="Sweet Finales">
+            <div class="specialty-overlay">
+                <span class="specialty-tag">Desserts</span>
+                <h3 class="specialty-name">Sweet Finales</h3>
+                <p class="specialty-desc">End on a heavenly note with our indulgent desserts, crafted to leave a lasting impression.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+    <div class="cta-content">
+        <p class="cta-label">Reservations</p>
+        <h2 class="cta-title">Ready for a Heavenly Experience?</h2>
+        <p class="cta-sub">Book your table today and let us take care of the rest.</p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+            <a href="/contact/" class="btn-gold">Reserve a Table</a>
+            <a href="/menu/" class="btn-outline">View Full Menu</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div class="footer-brand-name">The Angels</div>
+            <p class="footer-brand-desc">Fine dining with premium taste and a heavenly experience. Every visit is a celebration.</p>
+        </div>
+        <div class="footer-col">
+            <div class="footer-col-title">Navigate</div>
+            <a href="/">Home</a>
+            <a href="/menu/">Menu</a>
+            <a href="/contact/">Contact</a>
+        </div>
+        <div class="footer-col">
+            <div class="footer-col-title">Hours</div>
+            <p>Mon – Thu: 10am – 10pm</p>
+            <p>Fri – Sun: 10am – 11pm</p>
+        </div>
+        <div class="footer-col">
+            <div class="footer-col-title">Contact</div>
+            <p>Main Road, Vadodara</p>
+            <p>+91 97019 90126</p>
+            <p>lalithcharan@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 The Angels Restaurant. All rights reserved.</span>
+        <span>Crafted with ♥ in Vadodara</span>
+    </div>
+</footer>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+</script>
 </body>
 </html>

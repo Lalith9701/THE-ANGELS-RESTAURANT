@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import MenuItem, Reservation
+from django.shortcuts import render
+from .models import MenuItem
 
 CATEGORIES = [
     ('Soup', 'Soups'),

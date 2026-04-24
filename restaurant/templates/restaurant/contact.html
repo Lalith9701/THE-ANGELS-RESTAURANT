@@ -467,7 +467,7 @@
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
         <p class="page-hero-label">Get in Touch</p>
-        <h1 class="page-hero-title">Contact <em>&</em> Reserve</h1>
+        <h1 class="page-hero-title">Contact <em>&amp;</em> Reserve</h1>
     </div>
 </div>
 
@@ -544,14 +544,6 @@
             <!-- FORM STATE -->
             <h2 class="form-title">Make a Reservation</h2>
             <p class="form-subtitle">Fill in the details below and we'll confirm your booking within a few hours.</p>
-
-            {% if messages %}
-            {% for message in messages %}
-            <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 16px;border-radius:4px;font-size:0.85rem;margin-bottom:20px;">
-                {{ message }}
-            </div>
-            {% endfor %}
-            {% endif %}
 
             <form id="reservation-form" onsubmit="submitReservation(event)">
                 <div class="form-row">

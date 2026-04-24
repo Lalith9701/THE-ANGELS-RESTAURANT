@@ -568,10 +568,9 @@
             document.body.style.overflow = '';
         }
 
-        function addToCart(name, price) {
+        function addToCart(name, price, btn) {
             cart.push({ name, price });
             renderCart();
-            const btn = event.currentTarget;
             const orig = btn.textContent;
             btn.textContent = '✓ Added';
             btn.style.opacity = '0.7';
@@ -668,7 +667,6 @@
     <div class="menu-section">
 
         {% for cat_name, cat_label in veg_categories %}
-        {% with has_items=False %}
         <div class="category-block">
             <div class="category-header">
                 <span class="category-label">{{ cat_label }}</span>
@@ -689,14 +687,13 @@
                         {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
                         <div class="card-footer">
                             <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+                            <button class="add-btn add-btn-veg" onclick="addToCart('{{ item.name }}', {{ item.price }}, this)">Add to Order</button>
                         </div>
                     </div>
                 </div>
                 {% endif %}{% endfor %}
             </div>
         </div>
-        {% endwith %}
         {% endfor %}
 
     </div>
@@ -727,7 +724,7 @@
                         {% if item.description %}<p class="card-desc">{{ item.description }}</p>{% endif %}
                         <div class="card-footer">
                             <div class="card-price"><span>₹</span>{{ item.price }}</div>
-                            <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }})">Add to Order</button>
+                            <button class="add-btn add-btn-nonveg" onclick="addToCart('{{ item.name }}', {{ item.price }}, this)">Add to Order</button>
                         </div>
                     </div>
                 </div>

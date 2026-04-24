@@ -530,79 +530,96 @@
     <!-- FORM COLUMN -->
     <div class="form-col">
         <div class="form-card">
+
+            {% if success %}
+            <!-- SUCCESS STATE -->
+            <div class="success-msg" style="display:block;">
+                <div class="success-icon">✅</div>
+                <h3 class="success-title">Reservation Received!</h3>
+                <p class="success-text">Thank you! We've notified the restaurant and will confirm your booking shortly. We look forward to welcoming you.</p>
+                <a href="/contact/" style="display:inline-block;margin-top:24px;padding:12px 32px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;border-radius:2px;transition:all 0.3s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--dark)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">Make Another Reservation</a>
+            </div>
+
+            {% else %}
+            <!-- FORM STATE -->
             <h2 class="form-title">Make a Reservation</h2>
             <p class="form-subtitle">Fill in the details below and we'll confirm your booking within a few hours.</p>
 
-            <div id="reservation-form">
+            {% if messages %}
+            {% for message in messages %}
+            <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:12px 16px;border-radius:4px;font-size:0.85rem;margin-bottom:20px;">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="/contact/" id="reservation-form">
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="fname">First Name</label>
-                        <input class="form-input" type="text" id="fname" placeholder="John">
+                        <label class="form-label" for="first_name">First Name <span style="color:var(--gold)">*</span></label>
+                        <input class="form-input" type="text" id="first_name" name="first_name" placeholder="John" value="{{ form_data.first_name|default:'' }}" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="lname">Last Name</label>
-                        <input class="form-input" type="text" id="lname" placeholder="Doe">
+                        <label class="form-label" for="last_name">Last Name</label>
+                        <input class="form-input" type="text" id="last_name" name="last_name" placeholder="Doe" value="{{ form_data.last_name|default:'' }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="phone">Phone</label>
-                        <input class="form-input" type="tel" id="phone" placeholder="+91 00000 00000">
+                        <label class="form-label" for="phone">Phone <span style="color:var(--gold)">*</span></label>
+                        <input class="form-input" type="tel" id="phone" name="phone" placeholder="+91 00000 00000" value="{{ form_data.phone|default:'' }}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="email">Email</label>
-                        <input class="form-input" type="email" id="email" placeholder="you@example.com">
+                        <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" value="{{ form_data.email|default:'' }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="date">Date</label>
-                        <input class="form-input" type="date" id="date">
+                        <label class="form-label" for="date">Date <span style="color:var(--gold)">*</span></label>
+                        <input class="form-input" type="date" id="date" name="date" value="{{ form_data.date|default:'' }}" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="time">Time</label>
-                        <input class="form-input" type="time" id="time">
+                        <label class="form-label" for="time">Time <span style="color:var(--gold)">*</span></label>
+                        <input class="form-input" type="time" id="time" name="time" value="{{ form_data.time|default:'' }}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="guests">Guests</label>
-                        <select class="form-select" id="guests">
+                        <label class="form-label" for="guests">Guests <span style="color:var(--gold)">*</span></label>
+                        <select class="form-select" id="guests" name="guests" required>
                             <option value="">Select</option>
-                            <option>1 Guest</option>
-                            <option>2 Guests</option>
-                            <option>3 Guests</option>
-                            <option>4 Guests</option>
-                            <option>5 Guests</option>
-                            <option>6+ Guests</option>
+                            <option {% if form_data.guests == "1 Guest" %}selected{% endif %}>1 Guest</option>
+                            <option {% if form_data.guests == "2 Guests" %}selected{% endif %}>2 Guests</option>
+                            <option {% if form_data.guests == "3 Guests" %}selected{% endif %}>3 Guests</option>
+                            <option {% if form_data.guests == "4 Guests" %}selected{% endif %}>4 Guests</option>
+                            <option {% if form_data.guests == "5 Guests" %}selected{% endif %}>5 Guests</option>
+                            <option {% if form_data.guests == "6+ Guests" %}selected{% endif %}>6+ Guests</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="occasion">Occasion</label>
-                        <select class="form-select" id="occasion">
+                        <select class="form-select" id="occasion" name="occasion">
                             <option value="">Select</option>
-                            <option>Birthday</option>
-                            <option>Anniversary</option>
-                            <option>Business Dinner</option>
-                            <option>Date Night</option>
-                            <option>Family Gathering</option>
-                            <option>Other</option>
+                            <option {% if form_data.occasion == "Birthday" %}selected{% endif %}>Birthday</option>
+                            <option {% if form_data.occasion == "Anniversary" %}selected{% endif %}>Anniversary</option>
+                            <option {% if form_data.occasion == "Business Dinner" %}selected{% endif %}>Business Dinner</option>
+                            <option {% if form_data.occasion == "Date Night" %}selected{% endif %}>Date Night</option>
+                            <option {% if form_data.occasion == "Family Gathering" %}selected{% endif %}>Family Gathering</option>
+                            <option {% if form_data.occasion == "Other" %}selected{% endif %}>Other</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="notes">Special Requests</label>
-                    <textarea class="form-textarea" id="notes" placeholder="Dietary requirements, seating preferences, or anything else we should know..."></textarea>
+                    <textarea class="form-textarea" id="notes" name="notes" placeholder="Dietary requirements, seating preferences, or anything else we should know...">{{ form_data.notes|default:'' }}</textarea>
                 </div>
-                <button class="submit-btn" onclick="submitForm()">Confirm Reservation</button>
+                <button type="submit" class="submit-btn">Confirm Reservation</button>
                 <p class="form-note">We'll call or email you to confirm. No payment required at this stage.</p>
-            </div>
+            </form>
+            {% endif %}
 
-            <div class="success-msg" id="success-msg">
-                <div class="success-icon">✅</div>
-                <h3 class="success-title">Reservation Received!</h3>
-                <p class="success-text">Thank you! We'll confirm your booking within a few hours. We look forward to welcoming you.</p>
-            </div>
         </div>
     </div>
 
@@ -634,20 +651,14 @@
 </footer>
 
 <script>
-    function submitForm() {
-        const fname = document.getElementById('fname').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const date  = document.getElementById('date').value;
-        const guests = document.getElementById('guests').value;
-
-        if (!fname || !phone || !date || !guests) {
-            alert('Please fill in your name, phone, date, and number of guests.');
-            return;
-        }
-
-        document.getElementById('reservation-form').style.display = 'none';
-        document.getElementById('success-msg').style.display = 'block';
-    }
+    // Highlight today's hours row based on actual day
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const today = days[new Date().getDay()];
+    document.querySelectorAll('.hours-row').forEach(row => {
+        const dayText = row.querySelector('.hours-day').textContent;
+        if (dayText.includes(today)) row.classList.add('today');
+        else row.classList.remove('today');
+    });
 </script>
 </body>
 </html>

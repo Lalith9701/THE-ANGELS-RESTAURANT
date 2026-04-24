@@ -699,10 +699,14 @@
         };
 
         try {
-            const res = await fetch('https://app.formspark.io/f/Ax2HFjRdpsyapcliBo7Z7ydr', {
+            const res = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    access_key: '46b91189-dc23-4768-a268-4bff063b199a',
+                    subject: 'New Table Reservation — The Angels Restaurant',
+                    ...data,
+                }),
             });
 
             if (res.ok) {
